@@ -282,7 +282,6 @@ class UserController {
     }
 
 
-
     async verifyOTP(req, res, next) {
         try {
             const { email, otp } = req.body;
@@ -305,8 +304,6 @@ class UserController {
             next(error);
         }
     }
-
-
 
     async setNewPassword(req, res, next) {
         try {
