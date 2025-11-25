@@ -69,6 +69,7 @@ class UserService {
                 RESPONSE_MESSAGES.USER_NOT_VERIFIED,
                 API_STATUS_CODES.USER_NOT_VERIFIED
             );
+            
         }
 
         // If verified → proceed to generate tokens

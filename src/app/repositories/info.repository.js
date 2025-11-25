@@ -21,6 +21,10 @@ class InfoRepository {
   async findAll(filter = {}) {
     return await InfoModel.find(filter);
   }
+
+  async count(filter = {}) {
+    return await InfoModel.countDocuments(filter);
+  }
 }
 
 module.exports = new InfoRepository();

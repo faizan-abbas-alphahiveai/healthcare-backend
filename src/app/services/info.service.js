@@ -25,6 +25,16 @@ class InfoService {
         throw new AppError('speciality is required for specialist doctors', API_STATUS_CODES.BAD_REQUEST);
       }
     }
+    // Enforce uniqueness per insurance card slot (insuranceCard1 / insuranceCard2)
+    if (type === 'insuranceCard') {
+      const existingCount = await infoRepository.count({
+        userId: data.userId,
+        type: type,
+      });
+      if (existingCount >= 2) {
+        throw new    AppError(`You already have 2 entries for insurance cards`, API_STATUS_CODES.BAD_REQUEST);
+      }
+    }
 
     // create and return
     const created = await infoRepository.createInfo(data);
@@ -55,6 +65,17 @@ class InfoService {
       }
       if (newDoctorType === 'specialist' && !newSpeciality) {
         throw new AppError('speciality is required for specialist doctors', API_STATUS_CODES.BAD_REQUEST);
+      }
+    }
+    // Enforce uniqueness per insurance card slot on update
+    if (newType === 'insuranceCard1' || newType === 'insuranceCard2') {
+      const existingCount = await infoRepository.count({
+        userId: info.userId,
+        type: newType,
+        _id: { $ne: id }, // exclude current document
+      });
+      if (existingCount >= 1) {
+        throw new AppError(`You already have an entry for ${newType}`, API_STATUS_CODES.BAD_REQUEST);
       }
     }
 
